@@ -1,7 +1,6 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 import { Edit3Icon, LucideDelete, User } from 'lucide-react'
-import Link from 'next/link'
 import { formatDate } from '@/lib/helpers'
 import {
   Table,
@@ -11,12 +10,14 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
+import { Skeleton } from '@/components/ui/skeleton'
 
+const skeletons = new Array(6).fill(null)
 export default function Home (): React.ReactElement {
-  const { data, refetch } = useQuery({
+  const { data, refetch, isFetching, isLoading } = useQuery({
     queryKey: ['getAllUsers'],
     queryFn: async () => {
-      const res = await fetch('/api/getAllUsers', { cache: 'no-cache' })
+      const res = await fetch('/api/getAllUsers')
       const data = await res.json()
       return data
     },
@@ -50,28 +51,49 @@ export default function Home (): React.ReactElement {
               <TableHead>Actions</TableHead>
            </TableRow>
         </TableHeader>
-        <TableBody>
-          {data?.length > 0 && data?.map((user: any) => {
-            return (
-              <TableRow key={user.id} >
-                <TableCell><User className='border-2 rounded-full '></User></TableCell>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.first_name}</TableCell>
-                <TableCell>{user.last_name}</TableCell>
-                <TableCell>{formatDate(user.birthday as string)}</TableCell>
-                <TableCell>{user.age ?? 100}</TableCell>
-                <TableCell className=' flex gap-2'>
-                  <Link href={`/updateUser/${user.id}`}>
-                    <Edit3Icon className='hover:text-blue-700 cursor-pointer active:scale-95'></Edit3Icon>
-                  </Link>
-                  <LucideDelete
-                    className='hover:text-red-500 cursor-pointer active:scale-95'
-                    onClick={() => { handleDeleteUser(user.id as string).catch(err => { console.log(err) }) }}></LucideDelete>
+        { isFetching || isLoading
+          // LOADING STATE
+          ? <TableBody>
+            {skeletons.map((_, index) => (
+            <TableRow key={index}>
+                <TableCell className='text-center'><Skeleton className='bg-slate-300 w-10 h-10 rounded-full'></Skeleton></TableCell>
+                <TableCell className='text-center'><Skeleton className='bg-slate-300 w-full h-4 rounded'></Skeleton></TableCell>
+                <TableCell className='text-center'><Skeleton className='bg-slate-300 w-full h-4 rounded'></Skeleton></TableCell>
+                <TableCell className='text-center'><Skeleton className='bg-slate-300 w-full h-4 rounded'></Skeleton></TableCell>
+                <TableCell className='text-center'><Skeleton className='bg-slate-300 w-full h-4 rounded'></Skeleton></TableCell>
+                <TableCell className='text-center'><Skeleton className='bg-slate-300 w-full h-4 rounded'></Skeleton></TableCell>
+                <TableCell className='flex   items-end gap-2 '>
+                  <Skeleton className='bg-slate-300 w-6 h-6 rounded mt-2'></Skeleton>
+                  <Skeleton className='bg-slate-300 w-6 h-6 rounded mt-2'></Skeleton>
                 </TableCell>
-              </TableRow>
-            )
-          })}
-        </TableBody>
+            </TableRow>
+
+            ))}
+          </TableBody>
+          : <TableBody>
+
+        {data?.length > 0 && data?.map((user: any) => {
+          return (
+            <TableRow key={user.id} >
+              <TableCell><User className='border-2 rounded-full '></User></TableCell>
+              <TableCell>{user.id}</TableCell>
+              <TableCell>{user.first_name}</TableCell>
+              <TableCell>{user.last_name}</TableCell>
+              <TableCell>{formatDate(user.birthday as string)}</TableCell>
+              <TableCell>{user.age ?? 100}</TableCell>
+              <TableCell className=' flex gap-2'>
+                <a href={`/updateUser/${user.id}`}>
+                  <Edit3Icon className='hover:text-blue-700 cursor-pointer active:scale-95'></Edit3Icon>
+                </a>
+                <LucideDelete
+                  className='hover:text-red-500 cursor-pointer active:scale-95'
+                  onClick={() => { handleDeleteUser(user.id as string).catch(err => { console.log(err) }) }}></LucideDelete>
+              </TableCell>
+            </TableRow>
+          )
+        })}
+      </TableBody>}
+
       </Table>
     </main>
   )
