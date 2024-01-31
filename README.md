@@ -12,5 +12,5 @@ A simple CRUD application where you can create, read, update, and delete data.
     Shadcn: UI component library
 
 
-## [Website](https://crud-app-abiel.vercel.app/) 
+## [https://crud-app-abiel.vercel.app/](https://crud-app-abiel.vercel.app/) 
    
