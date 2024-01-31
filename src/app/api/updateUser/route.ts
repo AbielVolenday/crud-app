@@ -6,6 +6,7 @@ import { differenceInYears } from 'date-fns'
 async function updateUser (req: NextRequest): Promise<NextResponse> {
   unstable_noStore()
 
+  // TODO VALIDATE INPUTS
   const { id, firstName, lastName, birthday } = await req.json()
   const birthDate = new Date(birthday as string)
   const age = differenceInYears(new Date(), birthDate)

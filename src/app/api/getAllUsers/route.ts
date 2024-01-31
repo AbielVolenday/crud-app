@@ -4,6 +4,8 @@ import { unstable_noStore } from 'next/cache'
 
 async function getAllUsers (req: NextRequest): Promise<Response> {
   unstable_noStore()
+
+  // TODO VALIDATE INPUTS
   try {
     const { rows } = await sql`SELECT * FROM users`
     return Response.json(rows)
