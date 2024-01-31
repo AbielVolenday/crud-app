@@ -3,11 +3,11 @@ import { useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { useParams } from 'next/navigation'
 import { formatDate } from '@/lib/helpers'
-
+import { unstable_noStore } from 'next/cache'
 export default function Page (): React.ReactElement {
+  unstable_noStore()
   const { id } = useParams()
   const [formData, setFormData] = useState({ firstName: '', lastName: '', birthday: '' })
-
   const { data, refetch, isLoading, isFetching } = useQuery({
     queryKey: ['updateUser'],
     queryFn: async () => {
@@ -16,13 +16,13 @@ export default function Page (): React.ReactElement {
       return data
     },
     enabled: false
+
   })
 
   async function handleUpdateUser (e: React.FormEvent): Promise<void> {
     e.preventDefault()
     await refetch()
   }
-  console.log(data)
   return (
     <>
       <form
@@ -66,7 +66,7 @@ export default function Page (): React.ReactElement {
         </button>
       </form>
         <div className='max-w-sm  mx-auto mt-10'>
-          {data &&
+          { data &&
           <div className='flex flex-col gap-2'>
               <h1 className='font-bold  text-xl'>Updated User : </h1>
               <span>First Name : {data.first_name}</span>
