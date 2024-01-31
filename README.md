@@ -1,10 +1,16 @@
+# CRUD APP 
+
+## Description :
+
+A simple CRUD application where you can create, read, update, and delete data.
+
+## Build With :  
+    - Typescript:  A strongly typed programming language that builds on JavaScript
+    - Nextjs: The React framework for the web
+    - React: Javascript library for building UI
+    - ReactQuery: Powerful asynchronous state management for TS/JS
+    - Shadcn: UI component library
 
 
-## CRUD APP 
-
-# Description :
-
-A simple CRUD (Create, Read, Update, Delete) web application built using Next.js, TypeScript, React, ReactQuery, and Shadcn. Users can create, read, update, and delete data, which is a common requirement for many web applications.
-
-## Website 
-    
+## [(https://crud-app-abiel.vercel.app/)] Website 
+   
